@@ -1,8 +1,8 @@
 # The BVD Color Extractor
 
-1. Make a folder for your images & then update the imageArray obj on line 63 of `index.html`.
+1. Make a folder for your images & then update the `imageArray` obj on line 63 of index.html.
 
-2. Install browser-sync `sudo npm install -g browser-sync`
+2. Install browser-sync w/ `sudo npm install -g browser-sync`
 
 3. cd to this folder.
 
