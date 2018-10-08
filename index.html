@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>The BVD Color Extractor</title>
+
+	<style>
+		table td {
+			border-bottom: 1px solid black;
+			border-right: 1px solid black;
+			padding: 5px;
+			font-family: monospace;
+		}
+		table thead td {
+			font-weight: bold;
+		}
+	</style>
+
+</head>
+<body>
+
+	<table>
+		<thead>
+			<tr>
+				<td>Filename</td>
+				<td>Primary</td>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
+	<script id="template" type="x-tmpl-mustache">
+
+		<tr>
+		<td>{{ filename }}</td>
+		<td>{{ primary.0 }}, {{ primary.1 }}, {{ primary.2 }}</td>
+
+		{{ #palette }}
+		<td>{{ . }}</td>
+		{{ /palette }}
+		</tr>
+
+</script>
+
+  <script src="js/color-thief.min.js"></script>
+  <script src="js/jquery.js"></script>
+  <script src="js/mustache.js"></script>
+
+	<script>
+
+		$(document).ready(function () {
+
+			var images =  [
+				{'file': 'images/2018-10-01.07-09-01.jpg'},
+				{'file': 'images/2018-10-01.12-00-01.jpg'},
+				{'file': 'images/2018-10-01.18-51-01.jpg'},
+				{'file': 'images/2018-10-02.07-09-01.jpg'},
+				{'file': 'images/2018-10-02.12-00-01.jpg'},
+				{'file': 'images/2018-10-02.18-51-01.jpg'},
+				{'file': 'images/2018-10-03.07-09-01.jpg'},
+				{'file': 'images/2018-10-03.12-00-01.jpg'},
+				{'file': 'images/2018-10-03.18-51-01.jpg'},
+				{'file': 'images/2018-10-04.07-09-01.jpg'},
+				{'file': 'images/2018-10-04.12-00-01.jpg'},
+				{'file': 'images/2018-10-04.18-51-01.jpg'},
+				{'file': 'images/2018-10-05.07-09-01.jpg'},
+				{'file': 'images/2018-10-05.12-00-02.jpg'},
+				{'file': 'images/2018-10-05.18-51-01.jpg'},
+				{'file': 'images/2018-10-06.07-09-01.jpg'},
+				{'file': 'images/2018-10-06.12-00-01.jpg'},
+				{'file': 'images/2018-10-06.18-51-01.jpg'},
+				{'file': 'images/2018-10-07.07-09-01.jpg'},
+				{'file': 'images/2018-10-07.12-00-01.jpg'}
+			];
+
+			$.each( images, function(i, image){
+				$('<img src="'+ image.file +'">').load(function(img) {
+
+					var colorThief = new ColorThief();
+					var image = new Image;
+					image.src = img.currentTarget.currentSrc;
+
+					var color = colorThief.getColor(image);
+					var palette = colorThief.getPalette(image, 7);
+
+					// console.log("---------------");
+					// console.log(i);
+					// console.log(img.currentTarget.currentSrc);
+					// console.log(color);
+					// console.log(palette);
+
+					var template = $('#template').html();
+				  var rendered = Mustache.render(template, {
+						"filename" : img.currentTarget.currentSrc,
+						"primary" : color,
+						"palette" : palette,
+					});
+
+				  $('tbody').append(rendered);
+				});
+			});
+	});
+
+	</script>
+
+</body>
+</html>
